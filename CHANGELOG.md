@@ -69,3 +69,21 @@ Requests are now recorded in logs/server.log.
 ### Improved
 - Cleaned server response handling
 - Verified correct output using curl
+
+## v1.0.0 
+
+### Added
+- Multi-threaded HTTP server
+- Static file serving
+- Basic API routing system
+- Logging system
+- Content-Type detection
+- Automatic `/` → `index.html`
+- 404 error handling
+
+### Improved
+- Logging timestamp format using ISO-style time
+- Cleaner routing architecture
+
+### Fixed
+- Duplicate response issues
