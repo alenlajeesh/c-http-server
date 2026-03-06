@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 #include "../include/server.h"
 #include "../include/request.h"
@@ -10,17 +11,41 @@
 
 #define BUFFER_SIZE 4096
 
+void* handle_client(void* arg)
+{
+    int client_fd = *(int*)arg;
+    free(arg);
+
+    char buffer[BUFFER_SIZE];
+    HttpRequest request;
+
+    memset(buffer, 0, BUFFER_SIZE);
+
+    int bytes = read(client_fd, buffer, BUFFER_SIZE - 1);
+
+    if (bytes > 0)
+    {
+        parse_http_request(buffer, &request);
+
+        printf("Thread %lu handling request\n", pthread_self());
+        printf("Method: %s\n", request.method);
+        printf("Path  : %s\n", request.path);
+
+        send_file_response(client_fd, request.path);
+    }
+
+    close(client_fd);
+    return NULL;
+}
+
 void start_server(int port){
 	int server_fd;
-	int client_fd;
-
+	
 	struct sockaddr_in server_addr;
 	struct sockaddr_in client_addr;
 
 	socklen_t client_len= sizeof(client_addr);
 	
-	char buffer[BUFFER_SIZE];
-
 	server_fd =socket(AF_INET,SOCK_STREAM,0);
 	if(server_fd<0){
 		perror("socket failed");
@@ -46,28 +71,28 @@ void start_server(int port){
 	printf("Server listening on port %d\n",port);
 
 	while(1){
-		client_fd=accept(server_fd,(struct sockaddr *)&client_addr,&client_len);
+		int *client_fd = malloc(sizeof(int));
 
-		if(client_fd<0){
+		if (!client_fd) {
+			perror("malloc failed");
+			continue;
+		}
+
+		*client_fd=accept(server_fd,(struct sockaddr *)&client_addr,&client_len);
+
+		if(*client_fd<0){
 			perror("accept failed");
 			continue;
 		}
-		printf("Client connected\n");
-		HttpRequest request;
-		memset(buffer,0,BUFFER_SIZE);
+		pthread_t thread;
 
-		int bytes =read(client_fd,buffer,BUFFER_SIZE-1);
-
-		if(bytes>0){
-			parse_http_request(buffer,&request);
-			printf("---- Parsed Request ----\n");
-			printf("Method  : %s\n", request.method);
-			printf("Path    : %s\n", request.path);
-			printf("Version : %s\n", request.version);
-			printf("------------------------\n");
-			send_file_response(client_fd, request.path);
+		if (pthread_create(&thread, NULL, handle_client, client_fd) != 0){
+			perror("pthread_create failed");
+			close(*client_fd);
+			free(client_fd);
+			continue;
 		}
-	}
 
-	close(client_fd);
+		pthread_detach(thread);
+	}
 }
