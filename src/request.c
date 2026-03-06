@@ -1,7 +1,9 @@
 #include <stdio.h>
-#include <string.h>
 #include "../include/request.h"
 
-void parse_http_request(char *buffer, HttpRequest *req){
-	sscanf(buffer,"%s %s %s",req->method,req->path,req->version);
+void parse_http_request(const char *buffer, HttpRequest *request)
+{
+    if (!buffer || !request)
+        return;
+    sscanf(buffer, "%7s %255s", request->method, request->path);
 }
