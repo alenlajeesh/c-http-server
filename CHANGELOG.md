@@ -24,3 +24,14 @@
 
 ### Changed
 - Server now parses incoming HTTP requests instead of printing raw data
+
+## [0.4.0]
+
+### Added
+- Static file serving from public directory
+- HTTP response generation
+- Basic Content-Type header
+- 404 Not Found response
+
+### Changed
+- Server now responds with HTML content instead of only printing requests
