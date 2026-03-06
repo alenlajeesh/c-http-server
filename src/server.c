@@ -26,11 +26,6 @@ void* handle_client(void* arg)
     if (bytes > 0)
     {
         parse_http_request(buffer, &request);
-
-        printf("Thread %lu handling request\n", pthread_self());
-        printf("Method: %s\n", request.method);
-        printf("Path  : %s\n", request.path);
-
         send_file_response(client_fd, request.path);
     }
 
@@ -75,6 +70,7 @@ void start_server(int port){
 
 		if (!client_fd) {
 			perror("malloc failed");
+			 free(client_fd);
 			continue;
 		}
 
@@ -82,6 +78,7 @@ void start_server(int port){
 
 		if(*client_fd<0){
 			perror("accept failed");
+			 free(client_fd);
 			continue;
 		}
 		pthread_t thread;
