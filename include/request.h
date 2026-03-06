@@ -1,14 +1,21 @@
+
 #ifndef REQUEST_H
 #define REQUEST_H
 
-typedef struct{
-	char method[8];
-	char path[256];
-	char version[16];
-}HttpRequest;
+#define MAX_METHOD 8
+#define MAX_PATH 256
 
-void parse_http_request(char *buffer,HttpRequest *req);
+typedef struct
+{
+    char method[MAX_METHOD];
+    char path[MAX_PATH];
+} HttpRequest;
+
+/*
+ * Parses a raw HTTP request buffer and extracts:
+ * - HTTP method (GET, POST, etc.)
+ * - Request path (/index.html, /api/time)
+ */
+void parse_http_request(const char *buffer, HttpRequest *request);
 
 #endif
-
-
