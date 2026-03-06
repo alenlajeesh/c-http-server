@@ -45,3 +45,16 @@
 
 ### Changed
 - Server now processes requests concurrently
+
+## [0.6.0]
+
+### Added
+- Request logging system
+- Content-Type detection for common file types
+- Automatic routing of "/" to index.html
+
+### Changed
+- HTTP responses now include correct Content-Type headers
+
+### Logging
+Requests are now recorded in logs/server.log.
