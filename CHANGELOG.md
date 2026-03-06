@@ -14,3 +14,13 @@
 
 ### Changed
 - Updated server loop to process incoming data
+
+## [0.3.0]
+
+### Added
+- HTTP request parser module
+- HttpRequest structure
+- Extraction of HTTP method, path, and version
+
+### Changed
+- Server now parses incoming HTTP requests instead of printing raw data

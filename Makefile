@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Iinclude
-SRC=src/main.c src/server.c src/request.c
+SRC=src/main.c src/server.c src/request.c src/response.c
 OUT=build/server
 
 all:
