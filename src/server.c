@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 
 #include "../include/server.h"
+#include "../include/request.h"
 
 #define BUFFER_SIZE 4096
 
@@ -51,16 +52,20 @@ void start_server(int port){
 			continue;
 		}
 		printf("Client connected\n");
+		HttpRequest request;
 		memset(buffer,0,BUFFER_SIZE);
 
 		int bytes =read(client_fd,buffer,BUFFER_SIZE-1);
 
 		if(bytes>0){
-			printf("---HTTP Request----\n");
-			printf("%s\n",buffer);
-			printf("-------------------\n");
+			parse_http_request(buffer,&request);
+			printf("---- Parsed Request ----\n");
+			printf("Method  : %s\n", request.method);
+			printf("Path    : %s\n", request.path);
+			printf("Version : %s\n", request.version);
+			printf("------------------------\n");
 		}
-
-		close(client_fd);
 	}
+
+	close(client_fd);
 }
