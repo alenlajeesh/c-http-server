@@ -6,6 +6,8 @@
 
 #include "../include/server.h"
 
+#define BUFFER_SIZE 4096
+
 void start_server(int port){
 	int server_fd;
 	int client_fd;
@@ -14,6 +16,8 @@ void start_server(int port){
 	struct sockaddr_in client_addr;
 
 	socklen_t client_len= sizeof(client_addr);
+	
+	char buffer[BUFFER_SIZE];
 
 	server_fd =socket(AF_INET,SOCK_STREAM,0);
 	if(server_fd<0){
@@ -47,6 +51,16 @@ void start_server(int port){
 			continue;
 		}
 		printf("Client connected\n");
+		memset(buffer,0,BUFFER_SIZE);
+
+		int bytes =read(client_fd,buffer,BUFFER_SIZE-1);
+
+		if(bytes>0){
+			printf("---HTTP Request----\n");
+			printf("%s\n",buffer);
+			printf("-------------------\n");
+		}
+
 		close(client_fd);
 	}
 }
