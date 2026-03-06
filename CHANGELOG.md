@@ -58,3 +58,14 @@
 
 ### Logging
 Requests are now recorded in logs/server.log.
+
+## [0.7.0]
+
+### Fixed
+- Fixed incorrect HTTP response format where headers appeared after body
+- Removed duplicate HTML output
+- Ensured correct HTTP header ordering
+
+### Improved
+- Cleaned server response handling
+- Verified correct output using curl
