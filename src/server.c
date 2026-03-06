@@ -6,6 +6,7 @@
 
 #include "../include/server.h"
 #include "../include/request.h"
+#include "../include/response.h"
 
 #define BUFFER_SIZE 4096
 
@@ -64,6 +65,7 @@ void start_server(int port){
 			printf("Path    : %s\n", request.path);
 			printf("Version : %s\n", request.version);
 			printf("------------------------\n");
+			send_file_response(client_fd, request.path);
 		}
 	}
 
