@@ -1,3 +1,6 @@
+build/
+logs/
+
 # Prerequisites
 *.d
 
