@@ -8,6 +8,7 @@
 #include "../include/server.h"
 #include "../include/request.h"
 #include "../include/response.h"
+#include "../include/router.h"
 
 #define BUFFER_SIZE 4096
 
@@ -26,9 +27,15 @@ void* handle_client(void* arg)
     if (bytes > 0)
     {
         parse_http_request(buffer, &request);
-        send_file_response(client_fd, request.path);
-    }
+		printf("Thread %lu handling request\n", pthread_self());
+		printf("Method: %s\n", request.method);
+		printf("Path  : %s\n", request.path);
 
+		handle_route(client_fd, request.method, request.path);
+
+    }
+	
+	
     close(client_fd);
     return NULL;
 }
