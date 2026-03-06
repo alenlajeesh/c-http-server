@@ -35,3 +35,13 @@
 
 ### Changed
 - Server now responds with HTML content instead of only printing requests
+
+## [0.5.0]
+
+### Added
+- Multithreaded request handling using pthread
+- Thread-per-connection architecture
+- Dedicated client handler function
+
+### Changed
+- Server now processes requests concurrently
