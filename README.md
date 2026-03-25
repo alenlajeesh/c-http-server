@@ -109,11 +109,11 @@ curl localhost:8080/api/time
 
 ## Example Log Output
 
-
+```
 [2026-03-06 19:12:31] GET / 200
 [2026-03-06 19:12:34] GET /api/time 200
 [2026-03-06 19:12:37] GET /random 404
-
+```
 
 ---
 
